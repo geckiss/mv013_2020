@@ -1,0 +1,363 @@
+# calculator
+sqrt((42 + 4.2)^2 + sin(exp(1) * pi))
+
+# variables
+a <- 5
+b <- 8
+c <- a + b
+c
+(c <- a + b)
+
+# comments
+d <- 15
+e <- 0.2
+f <- d + e # adding up d and e
+f^2
+
+# case sensitive
+a <- 25
+A <- 4
+a
+A
+(a <- A)
+
+# help
+help(mean)
+
+?mean
+
+# example from help page
+example(mean)
+
+# working directory
+getwd()
+# changing working directory - specify path
+# setwd()
+
+# logical operators
+1 == 1
+1 == 2
+1 != 1
+1 != 2
+1 < 2
+
+a <- T
+!a
+
+a <- 20
+b <- NA
+is.na(a)
+is.na(b)
+
+# data types
+# numerical - use decimal point
+a <- 2.2 
+
+# complex - i can't stand alone, always has to be with a number
+b <- 8 + 1i
+
+# string - both single and double quotation marks can be used, as long as you use the same at both ends
+a <- "something"
+b <- 'something else'
+
+# logical - TRUE/FALSE or T/F can be used
+a <- TRUE
+b <- T
+c <- FALSE
+d <- F
+# can be added up - TRUE is 1, FALSE is 0
+a + b
+a + c
+c + d
+
+# data structures
+# vectors(it prints in line, but they are transposed(care when u multiply matrices))
+a <- c(1,5,9,10)
+a
+b <- 5:10
+b
+c <- c(1,3,5:10)
+c
+d <- rep(1, 10)
+d
+e <- rep(b,2)
+e
+f <- seq(1,10, length=5)  # calculate the step
+f
+g <- seq(1,11, by=2)
+g
+
+# vectors don't have to be numerical, but all elements are taken to be of the same type
+character.vector <- c('this', 'is', 'a', 'vector')
+character.vector
+logical.vector <- c(T, F, F)
+logical.vector
+mixed.vector1 <- c(1, T, 5) 
+mixed.vector1 # in this case the resulting vector is taken to be numerical (TRUE = 1)
+mixed.vector2 <- c(1, T, 'a') 
+mixed.vector2 # in this case the resulting vector is taken to be string
+
+# factors
+x <- sample(c('child','teenager','adult'), replace=T, size=15)
+x
+h <- factor(x) #default order of levels is alphabetical
+# h <- h[1]+h[2]
+h
+
+h <- factor(h, levels=c('child', 'teenager', 'adult')) # reordering a factor
+h
+j <- factor(x, levels=c('child', 'teenager', 'adult')) # setting order from the start
+j
+
+# matrices
+A <- matrix(c(1:20), ncol=4)
+A
+B <- matrix(1:5, ncol=3, nrow=5)
+B
+C <- matrix(c(1:20), ncol=4, byrow=T)
+C
+D <- matrix(10, ncol=4, nrow=2)
+D
+E <- rbind(1:3, c(4,8,9), c(11,21,23))
+E
+G <- cbind(1:3, c(4,8,9), c(11,21,23))
+G
+
+# adding column or row names
+colnames(G) <- c('col1', 'col2', 'col3')
+rownames(G) <- c('row1', 'row2', 'row3')
+G
+
+# creating diagonal matrix
+H <- diag(1:5)
+H
+
+# if the same function is used on a matrix, it will return a vector containing diagonal 
+# elements of the matrix
+diag(G)
+
+# matrices don't have to be numerical, but all elements are taken to be of the same type
+character.matrix <- matrix(c('this', 'is', 'a', 'matrix'), nrow=2, byrow=T)
+character.matrix
+logical.matrix <- matrix(c(T, F, F, F, T, T), nrow=2)
+logical.matrix
+mixed.matrix1 <- matrix(c(1, T, 5, 3), nrow=2) 
+mixed.matrix1 # in this case the resulting matrix is taken to be numerical (TRUE = 1)
+mixed.matrix2 <- matrix(c(1, T, 'a', 5), nrow=2) 
+mixed.matrix2 # in this case the resulting matrix is taken to be string
+
+# data frames an have different data types in columns(database relation)
+df <- data.frame(numbers=1:10, letters=c('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'))
+df
+str(df)
+
+# lists
+a <- 1:10
+b <- c("just", "some", "strings")
+M <- matrix(1:15, ncol=3)
+
+l <- list(a, b, M)
+names(l) <- c("numbers", "words", "matrix")
+str(l)
+
+# subsetting
+## vector
+a <- 1:10
+a[4]
+a[c(4, 8)]
+# subsetting using logical operators
+a[a < 3 | a > 8]
+
+## matrix
+A <- matrix(c(1:12), ncol=4)
+A
+# element
+A[2, 3]
+# row
+A[2,]
+# column
+A[, 3]
+
+# you can use names to subset
+colnames(A) <- c('col1', 'col2', 'col3', 'col4')
+rownames(A) <- c('row1', 'row2', 'row3')
+A['row2', 'col3']
+A['row2',]
+A[, 'col3']
+
+# subsetting using logical operators
+A[, A[1,] > 3] # columns, that have value bigger than 3 in their first row 
+A[A[,3] == 7 | A[,3] == 9, ] # rows, that have value 7 or 9 in their third column
+
+
+## dataframe
+df <- data.frame(numbers=1:10, letters=c('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'))
+df
+# element
+df[2, 1]
+df[2, 'numbers']
+#row
+df[2, ]
+# column
+df[, 1]
+df[, 'numbers']
+df$numbers
+
+# subsetting using logical operators
+df[df$numbers > 5,]
+
+
+## list
+l <- list(1:10, c("just", "some", "strings"), matrix(1:15, ncol=3))
+# item of the list
+l[[2]]
+# element
+l[[2]][1]
+
+## list with names
+names(l) <- c("numbers", "words", "matrix")
+# item of the list
+l[[2]]
+l$words
+# element
+l[[2]][1]
+l$words[1]
+
+#  operations with vectors
+#addition of a number to all elements
+a <- 1:5
+a
+a + 3
+# multiplication of all elements by a number
+a * 2
+# division of all elements by a number
+a / 2
+
+# addition of vectors
+b <- 2:6
+a
+b
+a + b
+# element wise multiplication of vectors 
+a * b
+# element wise division of vectors
+a / b
+
+# cross product
+a %*% b
+
+# operations with matrices
+# addition of a number to all elements
+A <- matrix(1:6, ncol=2)
+A
+A + 3
+# multiplication of all elements by a number
+A * 2
+# division of all elements by a number
+A / 2
+
+# addition of matrices
+B <- matrix(11:16, ncol=2)
+A
+B
+A + B
+# element wise multiplication
+A * B
+# element wise division
+A / B
+
+# matrix multiplication
+A %*% t(B)
+
+# some basic functions
+a <- 1:10
+sum(a)
+mean(a)
+max(a)
+min(a)
+sd(a)
+
+# loops - avoid if possible
+a <- 1:10
+for (i in 1:length(a)){
+  b <- sum(a[1:i])
+  print(b)
+}
+
+i <- 0
+while (i < 3){
+  i <- i + 1
+  print(i)
+}
+
+# if-else
+answer <- 42
+if(answer == 42){
+  print('Correct answer')
+} else if(abs(answer - 42) <= 2){
+  print('Almost...')
+} else {
+  print('Wrong answer')
+}
+
+# creating functions
+add <- function(a, b, c=1){
+  # function adds up given values
+  # arguments: a ... number
+  #            b ... number
+  #            c ... number (default is 1)
+  # returns: number (sum of a, b and c)
+  print("a = ")
+  print(a)
+  return(a + b + c)
+}
+
+add(3, 4)
+add(3, 4, c=2)
+add(c=2, 1, 2)
+
+# function apply - applies given function to all rows/columns
+A <- matrix(1:20, ncol=4)
+A
+
+#row
+apply(A, MARGIN=1, FUN=mean)
+mean(c(1, 6, 11, 16))
+#column
+apply(A, MARGIN=2, FUN=mean)
+
+# loading data
+my.data <- read.table('~/Downloads/table1.txt', header=T)
+str(my.data)
+head(my.data, 3)
+tail(my.data, 2)
+
+# external libraries/scripts
+# install library from CRAN
+install.packages('circular')
+
+# load library into current namespace
+library(circular)
+
+# execute code from file (useful when you want to load external functions)
+# source('my-functions.R')
+
+# graphics - check pdf for more
+## parr()
+a = 1:100
+b = sin(0.1 * a)
+plot(a, b, xlab='x-test', ylab='y-test', main='Main title')   
+
+x <- a
+y <- b
+plot(x,y, type='p') #points (default)
+plot(x,y, type='l') #lines
+plot(x,y, type='b') #points and lines, but not connected
+plot(x,y, type='c') #just the lines between points from type='b'
+plot(x,y, type='o') #points and lines, connected
+plot(x,y, type='s') #steps (first horizontal, then vertical)
+plot(x,y, type='S') #steps (first vertical, then horizontal)
+plot(x,y, type='h') #vertical lines from x-axis to given points
+plot(x,y, type='n') #no plot, just axes
+
+
