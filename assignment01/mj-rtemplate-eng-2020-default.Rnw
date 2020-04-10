@@ -1,0 +1,150 @@
+\documentclass[12pt, oneside]{report}
+\usepackage[margin=0.85in]{geometry}
+\linespread{1}
+\usepackage{xcolor}
+\usepackage[colorlinks=false, linkbordercolor=white, citebordercolor=white, 
+    filebordercolor=white, urlbordercolor=white]{hyperref}
+    
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead{}
+\fancyhead[L]{Statistics for CS -- assignment 1} %%% change to your course name and change the number accordingly
+\fancyhead[R]{Martin Gregorík} %%% change to your first name and surname
+\fancyfoot{}
+\fancyfoot[C]{\thepage}
+
+\usepackage{titlesec}
+\titlespacing{\chapter}{0pt}{*4}{*2.5}
+
+\titleformat{\chapter}{\normalfont\huge\bf}{\thechapter}{20pt}{\huge\bf}
+
+
+% Setting up of environment
+\usepackage{listings}
+\definecolor{dgray}{gray}{0.35} % colour of comments
+\definecolor{lgray}{gray}{0.95} % background colour of R-code
+\definecolor{llgray}{gray}{0.98} % background colour of R-outputs
+
+\lstdefinestyle{Rstyle}{ % settings of R-code style
+language=R, % setting language R
+basicstyle=\ttfamily\small, % font and size of R-code
+backgroundcolor=\color{lgray}, % background colour of R-code
+commentstyle=\ttfamily\small\itshape\color{dgray}, % colour of R comments
+showstringspaces=false, % forbidding the highlighting of spaces
+numbers=left, % numbering on the left
+numberstyle=\ttfamily\small, % font and size of numbering
+stepnumber=1, % numbering with step 1
+firstnumber=last, % cumulative numbering of rows in consecutive Chunks
+breaklines=T} % automatic line breaks of code at the end of a line
+
+\lstdefinestyle{Routstyle}{ %  settings of R-output style
+language=R, % setting language R
+basicstyle=\ttfamily\small, % font and size of R-output
+backgroundcolor=\color{llgray}, % background colour of R-code
+showstringspaces=false, % forbidding the highlighting of spaces
+numbers=right, % numbering on the right
+numberstyle=\ttfamily\small, % font and size of numbering
+firstnumber=last, % cumulative numbering of rows in consecutive Chunks
+breaklines=T} % automatic line breaks of code at the end of a line
+
+\begin{document}
+
+<< setup, echo=F >>= # Setup Chunk
+render_listings()
+@
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+        
+        \Huge
+          \textbf{Statistics for CS} %%% change to your course name
+        
+        \vspace{0.5cm}
+        \LARGE
+        Assignment 1 %%% change the number accordingly
+        
+        \vspace{1.5cm}
+        
+        \textbf{Martin Gregorík} %%% change to your first name and surname
+   		  \vspace{1.5cm}
+        
+        \textbf{500359} %%% change to your UCO
+       
+        \vfill
+        
+        Services - Systems, Modelling and Execution %%% change to your field of study
+        
+        \vspace{0.8cm}
+          \Large
+        Faculty of Informatics\\
+        Masaryk University\\
+        \vspace{0.5cm}
+       \today
+        
+    \end{center}
+\end{titlepage}
+
+\addtocontents{toc}{~\hfill\textbf{Page}\par}
+
+\section*{Exercise 1}
+\noindent Text. Commentary on the approach to solving the exercise, theoretical derivation if the assignment asks for it.
+
+Text. Paragraphs are separated by an empty line.
+
+\subsection*{Implementation in R}
+
+<<>>=
+## this is so called chunk, where you write R-code, including loading data and libraries
+library(xtable)
+
+baschar <- function(x){
+  ## function for computing number of observations, mean and standard deviation
+  # input: x ... vector of observations
+  # output: vector containing number of observation, mean and standard deviation
+  v1 <- c(length(x), mean(x), sd(x))
+  return(v1)
+}
+
+obs <- rnorm(100,0,5)
+characteristics <- baschar(obs)
+char.mat <- matrix(characteristics, nrow=1, dimnames = list('name of variable', c('n', '$\\overline{x}$', '$s$')))
+@
+
+\bigskip
+
+\subsection*{Results and interpretation}
+\noindent Text. Results in table or graphic form. Commentaries and interpretation of the results.
+
+Interpretation. Text. Commentary relating to tables and figures. 
+
+<<echo = F, results = "asis">>=
+print(xtable(char.mat, digits=c(0,0,2,2), align='|l|rrr|', caption="Characteristics of (name of variable)"), sanitize.text.function=function(x){x})
+
+# explanation of some settings:
+# echo = F in chunk settings will prevent R-code being printed in the resulting pdf
+# results="asis" in chunk settings together with the use of print() on the output from function xtable() will take the output as LaTeX code instead of R-output, which means it will directly create a classic table in the pdf
+# sanitize.text.function=function(x){x} used in print() will secure, that labels in LaTeX form (eg. '$\\overline{x}$') will be correctly compiled
+# whenever you would use a LaTeX command with \, in Rnw chunk you need to double it, eg. '$\\overline{x}$'
+# argument digits in function xtable() sets the number of digits to display in the corresponding columns, first number corresponds to row name, therefore it needs to be set to 0
+# argument align in function xtable() sets column alignment, just as you're used to in LaTeX tables
+# argument caption in function xtable() sets the table caption
+@
+
+<<fig.width=8, fig.height=6, out.height='.45\\textheight', out.width='.6\\textheight', fig.align='center', fig.pos='h', fig.cap='Histogram of (name of variable)'>>=
+hist(obs, main='', xlab='name of variable', ylab='frequency')
+@
+
+
+\newpage
+
+\section*{Exercise 2}
+\noindent Don't forget to check, whether you included all required outputs in each exercise.
+
+\end{document}
