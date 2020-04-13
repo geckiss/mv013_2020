@@ -107,6 +107,12 @@ library(xtable)
 howell <- read.csv("Howell.csv", header = TRUE)
 #str(howell)
 
+<<<<<<< HEAD
+xcb_unsort <- howell$XCB[howell$Sex == 'M' & (howell$Population == 'AUSTRALI' | howell$Population == 'PERU')]
+xcb <- sort(xcb_unsort)
+#sum(is.na(xcb)) = 0
+#is.na(xcb)
+=======
 xcb.unsort <- howell$XCB[howell$Sex == 'M' & (howell$Population == 'AUSTRALI' | howell$Population == 'PERU')]
 xcb <- sort(xcb.unsort)
 #sum(is.na(xcb)) = 0
@@ -114,6 +120,7 @@ xcb <- sort(xcb.unsort)
 ### VARIABLES ###
 australi.peru.cols = c("dodgerblue4", "indianred")
 ### VARIABLES ###
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
 @
 
 \bigskip
@@ -121,7 +128,11 @@ Then I created custom functions.
 
 <<>>=
 # Task 1
+<<<<<<< HEAD
+my_sample_min <- function(vec) {
+=======
 MySampleMin <- function(vec) {
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
   min <- Inf
   for (i in 1:length(vec)) {
     if (vec[i] < min) {
@@ -131,7 +142,11 @@ MySampleMin <- function(vec) {
   return (min)
 }
 
+<<<<<<< HEAD
+my_sample_max <- function(vec) {
+=======
 MySampleMax <- function(vec) {
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
   max <- -Inf
   for (i in 1:length(vec)) {
     if (vec[i] > max) {
@@ -141,7 +156,11 @@ MySampleMax <- function(vec) {
   return (max)
 }
 
+<<<<<<< HEAD
+my_sample_mean <- function(vec) {
+=======
 MySampleMean <- function(vec) {
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
   sum <- 0
   for (i in 1:length(vec)) {
     sum <- sum + vec[i]
@@ -150,10 +169,17 @@ MySampleMean <- function(vec) {
 }
 
 # sum of (xi - x~) squared
+<<<<<<< HEAD
+my_sum_sample_avg <- function(vec, exponent=2) {
+  sum <- 0
+  div <- 0
+  avg <- my_sample_mean(vec)
+=======
 MySumSampleAvg <- function(vec, exponent=2) {
   sum <- 0
   div <- 0
   avg <- MySampleMean(vec)
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
   for (i in 1:length(vec)) {
     div <- vec[i] - avg
     sum <- sum + (div ^ exponent)
@@ -161,12 +187,20 @@ MySumSampleAvg <- function(vec, exponent=2) {
   return (sum)
 }
 
+<<<<<<< HEAD
+my_decile <- function(vec, k) {
+=======
 MyDecile <- function(vec, k) {
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
   # k / 10 * 100
   return (vec[1:(k * 10)])
 }
 
+<<<<<<< HEAD
+my_quartile <- function(vec, q) {
+=======
 MyQuartile <- function(vec, q) {
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
   # denominator
   denom <- 1 / q
   len <- length(vec)
@@ -178,6 +212,23 @@ MyQuartile <- function(vec, q) {
     return (vec[(len + 1) / denom])
   }
 }
+<<<<<<< HEAD
+median <- my_quartile(xcb, 0.5)
+
+my_five_num_sum <- function(vec) {
+  return (data.frame(min=my_sample_min(vec), lower_q=my_quartile(vec, 0.25), median=my_quartile(vec, 0.50), upper_q=my_quartile(vec, 0.75), max=my_sample_max(vec)))
+}
+
+my_sample_skew_cramer <- function(vec) {
+  nom <- my_sum_sample_avg(vec, 3)
+  denom <- length(vec) * (my_sample_variance(vec) ^ (3 / 2))
+  return (nom / denom)
+}
+
+my_sample_kurtosis <- function(vec) {
+  nom <- my_sum_sample_avg(vec, 4)
+  denom <- length(vec) * (my_sample_variance(vec) ^ 2)
+=======
 median <- MyQuartile(xcb, 0.5)
 
 MyFiveNumSum <- function(vec) {
@@ -193,25 +244,50 @@ MySampleSkewCramer <- function(vec) {
 MySampleKurtosis <- function(vec) {
   nom <- MySumSampleAvg(vec, 4)
   denom <- length(vec) * (MySampleVariance(vec) ^ 2)
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
   return ((nom / denom) - 3)
 }
 # broad = thick tails = platykurtic
 
+<<<<<<< HEAD
+my_sample_variance <- function(vec, exponent=2) {
+  if (length(vec) != 0) {
+    avg <- my_sample_mean(vec)
+    sum <- my_sum_sample_avg(vec, exponent)
+=======
 MySampleVariance <- function(vec, exponent=2) {
   if (length(vec) != 0) {
     avg <- MySampleMean(vec)
     sum <- MySumSampleAvg(vec, exponent)
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
     return (sum / (length(vec) - 1))
   }
 }
 
+<<<<<<< HEAD
+my_sample_standard_deviation <- function(vec, exponent=2) {
+  if (length(vec) != 0) {
+    pw <- my_sample_variance(vec, exponent)
+=======
 MySampleSd <- function(vec, exponent=2) {
   if (length(vec) != 0) {
     pw <- MySampleVariance(vec, exponent)
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
     return (sqrt(pw))
   }
 }
 
+<<<<<<< HEAD
+my_sample_range <- function(vec) {
+  return (my_sample_max(vec) - my_sample_min(vec))
+}
+
+my_sample_decile_range <- function(vec) {
+  return (my_quartile(vec, 0.90) - my_quartile(vec, 0.10))
+}
+
+my_sample_trimmed_avg <- function(vec) {
+=======
 MySampleRange <- function(vec) {
   return (MySampleMax(vec) - MySampleMin(vec))
 }
@@ -221,6 +297,7 @@ MySampleDecileRange <- function(vec) {
 }
 
 MySampleTrimmedAvg <- function(vec) {
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
   gamma <- 0.1
   n <- length(vec)
   g <- floor(gamma * n)
@@ -228,11 +305,19 @@ MySampleTrimmedAvg <- function(vec) {
   return ((1 / (n - 2 * g)) * sum(vec[g + 1:n - g]))
 }
 
+<<<<<<< HEAD
+my_sample_trimmed_var <- function(vec) {
+  gamma <- 0.1
+  n <- length(vec)
+  g <- floor(gamma * n)
+  xtg <- my_sample_trimmed_avg(vec)
+=======
 MySampleTrimmedVar <- function(vec) {
   gamma <- 0.1
   n <- length(vec)
   g <- floor(gamma * n)
   xtg <- MySampleTrimmedAvg(vec)
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
   # stg
   return ((1 / (n - (2 * g) - 1)) * sum((vec[g + 1:n - g] - xtg)^2))
 }
@@ -243,6 +328,48 @@ MySampleTrimmedVar <- function(vec) {
 
 <<>>=
 # Australia
+<<<<<<< HEAD
+xcb_australi_unsorted <- howell$XCB[howell$Sex == 'M' & howell$Population == 'AUSTRALI']
+xcb_australi <- sort(xcb_australi_unsorted)
+xcb_aus_tab <- round(data.frame(
+  size=length(xcb_australi),
+  mean=my_sample_mean(xcb_australi), 
+  my_five_num_sum(xcb_australi),
+  skew=my_sample_skew_cramer(xcb_australi), 
+  kurt=my_sample_kurtosis(xcb_australi), 
+  variance=my_sample_variance(xcb_australi), 
+  sd=my_sample_standard_deviation(xcb_australi), 
+  range=my_sample_range(xcb_australi), 
+  dec_range=my_sample_decile_range(xcb_australi), 
+  trim_avg=my_sample_trimmed_avg(xcb_australi), 
+  trim_var=my_sample_trimmed_var(xcb_australi)
+), 4)
+# Peru
+xcb_peru_unsorted <- howell$XCB[howell$Sex == 'M' & howell$Population == 'PERU']
+xcb_peru <- sort(xcb_peru_unsorted)
+xcb_peru_tab <- round(data.frame(
+  size=length(xcb_peru), 
+  mean=my_sample_mean(xcb_peru), 
+  my_five_num_sum(xcb_peru),
+  skew=my_sample_skew_cramer(xcb_peru), 
+  kurt=my_sample_kurtosis(xcb_peru), 
+  variance=my_sample_variance(xcb_peru), 
+  sd=my_sample_standard_deviation(xcb_peru), 
+  range=my_sample_range(xcb_peru), 
+  dec_range=my_sample_decile_range(xcb_peru), 
+  trim_avg=my_sample_trimmed_avg(xcb_peru), 
+  trim_var=my_sample_trimmed_var(xcb_peru)
+), 4)
+# Concat them to single data frame
+xcb_tab <- xcb_aus_tab
+xcb_tab[2, ] <- xcb_peru_tab
+rownames(xcb_tab) <- c("AUSTRALI", "PERU")
+# Since the table is too long for pdf, I split them into two.
+# Yes, I concatenated them earlier, but that was rows.
+# Now I cut them in half by columns.
+xcb_tab_first_half <- xcb_tab[, 1:(length(xcb_tab) / 2)]
+xcb_tab_second_half <- xcb_tab[, ((length(xcb_tab) / 2) + 1):length(xcb_tab)]
+=======
 xcb.australi.unsorted <- howell$XCB[howell$Sex == 'M' & howell$Population == 'AUSTRALI']
 xcb.australi <- sort(xcb.australi.unsorted)
 xcb.aus.tab <- round(data.frame(
@@ -283,13 +410,19 @@ rownames(xcb.tab) <- c("AUSTRALI", "PERU")
 # Now I cut them in half by columns.
 xcb.tab.first.half <- xcb.tab[, 1:(length(xcb.tab) / 2)]
 xcb.tab.second.half <- xcb.tab[, ((length(xcb.tab) / 2) + 1):length(xcb.tab)]
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
 @
 
 \newpage
 
 <<xcb_characteristics, echo = F, results = "asis">>=
+<<<<<<< HEAD
+print(xtable(xcb_tab_first_half, caption="Characteristics of maximal cranial breadth of AUSTRALI and PERU populations"), sanitize.text.function=function(x){x})
+print(xtable(xcb_tab_second_half, caption="Characteristics of maximal cranial breadth of AUSTRALI and PERU populations"), sanitize.text.function=function(x){x})
+=======
 print(xtable(xcb.tab.first.half, caption="Characteristics of maximal cranial breadth of AUSTRALI and PERU populations"), sanitize.text.function=function(x){x})
 print(xtable(xcb.tab.second.half, caption="Characteristics of maximal cranial breadth of AUSTRALI and PERU populations"), sanitize.text.function=function(x){x})
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
 @
 
 \bigskip
@@ -297,6 +430,27 @@ Next, I created boxplots of maximum cranial breadth for each population. I set t
 
 <<>>=
 # Different lengths(australi is 52, peru 55), need to add 0s to the end(neglected in output)
+<<<<<<< HEAD
+n <- max(length(xcb_australi), length(xcb_peru))
+xcb_australi_prolonged <- xcb_australi
+length(xcb_australi_prolonged) <- n
+max_b <- data.frame(AUSTRALI=xcb_australi_prolonged, PERU=xcb_peru)
+@
+<<fig.width=8, fig.height=6, out.height='.45\\textheight', out.width='.6\\textheight', fig.align='center', fig.pos='h', fig.cap='Boxplot of maximal cranial breadth(mm)'>>=
+# Variable australi_peru_cols will be used in following exercises
+australi_peru_cols = c("dodgerblue4", "indianred")
+boxplot(
+  max_b,
+  width = c(length(xcb_australi), length(xcb_peru)),
+  notch = TRUE,
+  main = "Boxplot of maximal cranial breadth",
+  xlab = "Countries",
+  ylab = "Maximal cranial breadth (mm)",
+  col = australi_peru_cols,
+  pch = 16
+)
+points(1:2, xcb_tab$mean, col = "green", pch = 16)
+=======
 n <- max(length(xcb.australi), length(xcb.peru))
 xcb.australi.prolonged <- xcb.australi
 length(xcb.australi.prolonged) <- n
@@ -314,6 +468,7 @@ boxplot(
   pch = 16
 )
 points(1:2, xcb.tab$mean, col = "green", pch = 16)
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
 legend('topleft', pch = 16, legend = c("Maximum", "Average"), col = c("black", "green"))
 @
 
@@ -325,6 +480,20 @@ def.par <- par()
 layout(matrix(c(1, 2), nrow=1, ncol=2), widths=c(0.5, 0.5))
 #layout.show(n=2)
 hist(
+<<<<<<< HEAD
+  xcb_australi, 
+  main = "Australi population", 
+  xlab = "Maximal cranial breadth(mm)", 
+  ylab = "Count", 
+  col = australi_peru_cols[1]
+)
+hist(
+  xcb_peru, 
+  main = "Peru population", 
+  xlab = "Maximal cranial breadth(mm)", 
+  ylab = "Count", 
+  col = australi_peru_cols[2]
+=======
   xcb.australi, 
   main = "Australi population", 
   xlab = "Maximal cranial breadth(mm)", 
@@ -337,6 +506,7 @@ hist(
   xlab = "Maximal cranial breadth(mm)", 
   ylab = "Count", 
   col = australi.peru.cols[2]
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
 )
 @
 
@@ -350,6 +520,27 @@ Created normal qq-plot of maximum cranial breadth for each population.
 layout(matrix(c(1, 2), nrow=1, ncol=2), widths=c(0.5, 0.5))
 #layout.show(n=2)
 qqnorm(
+<<<<<<< HEAD
+  y = xcb_australi, 
+  main = "Australi population", 
+  xlab = "Theoretical quantities", 
+  ylab = "Maximal cranial breadth(mm)",
+  ylim = c(min(xcb_australi, xcb_peru), max(xcb_australi, xcb_peru)),
+  pch = 16,
+  col = australi_peru_cols[1]
+)
+qqline(xcb_australi)
+qqnorm(
+  y = xcb_peru, 
+  main = "Peru population", 
+  xlab = "Theoretical quantities", 
+  ylab = "Maximal cranial breadth(mm)",
+  ylim = c(min(xcb_australi, xcb_peru), max(xcb_australi, xcb_peru)),
+  pch = 16,
+  col = australi_peru_cols[2]
+)
+qqline(xcb_peru)
+=======
   y = xcb.australi, 
   main = "Australi population", 
   xlab = "Theoretical quantities", 
@@ -369,6 +560,7 @@ qqnorm(
   col = australi.peru.cols[2]
 )
 qqline(xcb.peru)
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
 @
 
 \newpage
@@ -387,6 +579,22 @@ First, I loaded the data. Then I checked for missing values in desired subset. T
 Also, I like to keep variables at the beggining of each significant part, in this case Exercise.
 
 <<>>=
+<<<<<<< HEAD
+area_esp <- read.csv("area_spanish_provinces.csv", header = TRUE)
+pop_esp <- read.csv2("population-spain-1998-2018.csv", header = TRUE)
+#str(area_esp)
+#str(pop_esp)
+#pop_esp
+#sum(is.na(pop_esp[, 2:length(pop_esp)])) = 0
+### VARIABLES ###
+legend_sex <- c("Women", "Men")
+stat_years <-  c("1998", "2018")
+total_pop_cols = c("pink", "dodgerblue")
+year_cols = c("darkgoldenrod", "chocolate")
+### VARIABLES ###
+people_each_year <- as.table(colSums(pop_esp[, 2:length(pop_esp)]))
+total_people_each_year <- addmargins(people_each_year, FUN = c(Total=sum))
+=======
 area.esp <- read.csv("area_spanish_provinces.csv", header = TRUE)
 pop.esp <- read.csv2("population-spain-1998-2018.csv", header = TRUE)
 #str(area.esp)
@@ -401,6 +609,7 @@ year.cols = c("darkgoldenrod", "chocolate")
 ### VARIABLES ###
 people.each.year <- as.table(colSums(pop.esp[, 2:length(pop.esp)]))
 total.people.each.year <- addmargins(people.each.year, FUN = c(Total=sum))
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
 @
 
 Then I created a barplot of total population of Spain in each of the years, with each bar divided between men and women. 
@@ -420,11 +629,19 @@ Then I created a barplot of total population of Spain in each of the years, with
 "bty" in legend to hide legend box.
 
 <<fig.width=8, fig.height=6, out.height='.45\\textheight', out.width='.6\\textheight', fig.align='center', fig.pos='h', fig.cap='Barplot of total population in Spain'>>=
+<<<<<<< HEAD
+df_people <- as.data.frame(people_each_year)
+# switched ordering of years
+df_people <- df_people[dim(df_people)[1]:1, ]
+df_people <- matrix(
+  df_people[, 2], 
+=======
 df.people <- as.data.frame(people.each.year)
 # switched ordering of years
 df.people <- df.people[dim(df.people)[1]:1, ]
 df.people <- matrix(
   df.people[, 2], 
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
   nrow = 2, 
   ncol = 5,
   byrow = TRUE,
@@ -433,6 +650,16 @@ df.people <- matrix(
 # It is clean now
 suppressWarnings(par(def.par))
 barplot(
+<<<<<<< HEAD
+  height = df_people, 
+  main = "Total population of Spain", 
+  ylim = c(0, max(df_people)), 
+  beside = TRUE, 
+  las = 1,
+  cex.axis = 0.8,
+  col = total_pop_cols)
+legend('topleft', pch = 15, legend = legend_sex, col = total_pop_cols, bty = 'n')
+=======
   height = df.people, 
   main = "Total population of Spain", 
   ylim = c(0, max(df.people)), 
@@ -442,6 +669,7 @@ barplot(
   col = total.pop.cols
 )
 legend('topleft', pch = 15, legend = legend.sex, col = total.pop.cols, bty = 'n')
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
 @
 
 \newpage
@@ -454,12 +682,29 @@ Then I created a barplot of relative proportions of men and women in each provin
 "las", to make axis labels perpendicular to the axis.
 
 <<fig.width=8, fig.height=6, out.height='.45\\textheight', out.width='.6\\textheight', fig.align='center', fig.pos='h', fig.cap='Barplot of relative population of Spain in 2018'>>=
+<<<<<<< HEAD
+relative_pop_2018_provinces <- matrix(
+  data = c(pop_esp$females.2018, pop_esp$males.2018),
+=======
 relative.pop.2018.provinces <- matrix(
   data = c(pop.esp$females.2018, pop.esp$males.2018),
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
   nrow = 52,
   ncol = 2
 )
 barplot(
+<<<<<<< HEAD
+  height = t(relative_pop_2018_provinces), 
+  names.arg = pop_esp$province, 
+  cex.names = 0.6, 
+  cex.axis = 0.8, 
+  main = "2018 relative population of Spain", 
+  ylim = c(0, max(relative_pop_2018_provinces)), 
+  las = 2, 
+  beside = TRUE, 
+  col = total_pop_cols)
+legend('topleft', pch = 15, legend = legend_sex, col = total_pop_cols, bty = 'n')
+=======
   height = t(relative.pop.2018.provinces), 
   names.arg = pop.esp$province, 
   cex.names = 0.6, 
@@ -471,12 +716,34 @@ barplot(
   col = total.pop.cols
 )
 legend('topleft', pch = 15, legend = legend.sex, col = total.pop.cols, bty = 'n')
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
 @
 
 \newpage
 Then I calculated population density in 1998 and 2018, for each province. The are of each province was loaded in the beginning of this exercise. I created a helper matrix to store intermediate values.
 
 <<>>=
+<<<<<<< HEAD
+ppl_in_two_years <- matrix(
+  data = c(
+    pop_esp$males.1998,
+    pop_esp$females.1998,
+    pop_esp$males.2018,
+    pop_esp$females.2018
+    ),
+  nrow = nrow(pop_esp),
+  ncol = 4,
+  dimnames = list(pop_esp$province, c("males.1998", "females.1998", "males.2018", "females.2018"))
+)
+total_1998 <- as.vector(rowSums(ppl_in_two_years[, 1:2]))
+total_2018 <- as.vector(rowSums(ppl_in_two_years[, 3:4]))
+density_1998 <- total_1998 / area_esp$Area
+density_2018 <- total_2018 / area_esp$Area
+den <- data.frame(
+  Province=pop_esp$province,
+  "Year 1998" = density_1998, 
+  "Year 2018" = density_2018
+=======
 ppl.in.two.years <- matrix(
   data = c(
     pop.esp$males.1998,
@@ -496,6 +763,7 @@ den <- data.frame(
   Province=pop.esp$province,
   "Year 1998" = density.1998, 
   "Year 2018" = density.2018
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
 )
 @
 
@@ -503,6 +771,31 @@ den <- data.frame(
 
 <<>>=
 # subtask a)
+<<<<<<< HEAD
+den_sorted_1998 <- sort(den$Year.1998)
+den_sorted_1998_tab <- round(data.frame(
+  size=length(den_sorted_1998),
+  mean=my_sample_mean(den_sorted_1998), 
+  my_five_num_sum(den_sorted_1998),
+  skew=my_sample_skew_cramer(den_sorted_1998), 
+  kurt=my_sample_kurtosis(den_sorted_1998),
+  sd=my_sample_standard_deviation(den_sorted_1998)
+), 4)
+den_sorted_2018 <- sort(den$Year.2018)
+den_sorted_2018_tab <- round(data.frame(
+  size=length(den_sorted_2018),
+  mean=my_sample_mean(den_sorted_2018), 
+  my_five_num_sum(den_sorted_2018),
+  skew=my_sample_skew_cramer(den_sorted_2018), 
+  kurt=my_sample_kurtosis(den_sorted_2018),
+  sd=my_sample_standard_deviation(den_sorted_2018)
+), 4)
+density_characteristics <- rbind(den_sorted_1998_tab, den_sorted_2018_tab)
+row.names(density_characteristics) <- stat_years
+@
+<<density_characteristics, echo = F, results = "asis">>=
+print(xtable(density_characteristics, caption="Characteristics of population density of Spain in 1998 and 2018"), sanitize.text.function=function(x){x})
+=======
 den.sorted.1998 <- sort(den$Year.1998)
 den.sorted.1998.tab <- round(data.frame(
   size=length(den.sorted.1998),
@@ -526,6 +819,7 @@ row.names(density.characteristics) <- stat.years
 @
 <<density.characteristics, echo = F, results = "asis">>=
 print(xtable(density.characteristics, caption="Characteristics of population density of Spain in 1998 and 2018"), sanitize.text.function=function(x){x})
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
 @
 
 \noindent In subtask b, I created a boxplot of population density in 1998 and in 2018. I have set the Y axis limits in order to see the graphs nicely, because there were some outliers which would squish the whole plot.
@@ -540,7 +834,11 @@ boxplot(
   ylab = "Population density",
   ylim = c(0, 250),
   pch = 16,
+<<<<<<< HEAD
+  col = year_cols
+=======
   col = year.cols
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
 )
 @
 
@@ -555,38 +853,62 @@ Lastly, I also changed axes a little bit because I didn't like the values insert
 <<fig.width=8, fig.height=6, out.height='.45\\textheight', out.width='.6\\textheight', fig.align='center', fig.pos='h', fig.cap='Histogram of population density in Spain in 1998 and 2018'>>=
 # subtask c)
 suppressWarnings(par(def.par))
+<<<<<<< HEAD
+rgb_cols = c(rgb(0.6,0.4,0.2,0.5), rgb(0.3,0.5,0.6,0.5))
+=======
 rgb.cols = c(rgb(0.6,0.4,0.2,0.5), rgb(0.3,0.5,0.6,0.5))
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
 hist(
   den$Year.1998, 
   main = "Pop. density in 1998 & 2018", 
   xlab = "Density(people/km^2)", 
   ylab = "Number of provinces", 
   las = 2, 
+<<<<<<< HEAD
+  col = rgb_cols[1], 
+  breaks = density_characteristics$size[1], 
+=======
   col = rgb.cols[1], 
   breaks = density.characteristics$size[1], 
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
   xaxt = 'n', 
   yaxt = 'n'
 )
 # X axis
 axis(
   side = 1, 
+<<<<<<< HEAD
+  at = seq(0, max(density_characteristics$max), by = 250), 
+=======
   at = seq(0, max(density.characteristics$max), by = 250), 
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
   las = 2, 
   cex.axis = 0.8
 )
 # Y axis
 axis(
   side = 2, 
+<<<<<<< HEAD
+  at = seq(0, density_characteristics$size[1], by = 5), 
+=======
   at = seq(0, density.characteristics$size[1], by = 5), 
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
   las = 2, 
   cex.axis = 0.8
 )
 hist(
   den$Year.2018, 
+<<<<<<< HEAD
+  col = rgb_cols[2], 
+  breaks = density_characteristics$size[2], 
+  add = T)
+legend('topright', pch = 15, legend = stat_years, col = rgb_cols, bty = 'n')
+=======
   col = rgb.cols[2], 
   breaks = density.characteristics$size[2], 
   add = T)
 legend('topright', pch = 15, legend = stat.years, col = rgb.cols, bty = 'n')
+>>>>>>> 095108dd2812482d04109ff394e654564fa1501d
 @
 
 \newpage
