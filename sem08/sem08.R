@@ -3,7 +3,7 @@ setwd("/home/martingregorik/FI/mv013_2020/sem08")
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!! #
 # task 01
 # kernel, we can disregard the rest. Why?
-# I think it's because when we derive by theta,
+# I think it's because when we derive with respect to theta,
 # every other variable is perceived as constant
 # and constant derived is 1
 # subtask 01
@@ -57,27 +57,54 @@ Task.2.Solver(18, 20)
 
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!! #
-# Am i missing something here? Whats the difference between this exercise nad previous one?
+# Am i missing something here? Whats the difference between this exercise and previous one?
 # It is still binomial distribution, so the same equation.
 # Only input parameters change.
 # Is the 'x' a set below correct? x is meant to be observations, but the values are not in exercise.
 # task 03
 x <- 15
 N <- 20
-Task.3.Solver <- function(x, N) {
-  # How to get x / N? Solve the likelihood equation -> set likelihood function = 0 and derive by theta(p)
-  p <- x / N
-  phat <- (-x / (p ^ 2)) - ((N - x) / (1 - p) ^ 2)
-  return (phat)
-}
-Task.3.Solver(x, N)
-binom.likelihood(x / N, x, N)
-# This will plot the red point in exercise instructions 1st plot from top left
-plot(x, binom.likelihood(x / N, x, N))
+
+p.hat.1 <- optimize(f = binom.likelihood, interval = c(0, 1), maximum = T, x = x, N = N)$maximum
+p.hat.11 <- optimize(f = binom.log.likelihood, interval = c(0, 1), maximum = T, x = x, N = N)$maximum
+
+pfit <- seq(0.001, 1, length.out = 500)
+
+like2.1 <- binom.likelihood(pfit, x, N)
+likehood2.1 <- binom.likelihood(p.hat.1, x, N)
+
+plot(pfit, like2.1, type = 'l', xlab = 'prob', ylab = 'likelihood function')
+abline(v = p.hat.1, col = 'red', lty = 2)
+abline(h = likehood2.1, col = 'red', lty = 2)
+points(p.hat1, likehood2.1, col = 'red', pch = 20)
 
 # relative likelihood
-plot(x, binom.likelihood(x / N, x, N) /  binom.likelihood(Task.3.Solver(x, N), x, N))
+rel.like <- like2.1 / likehood2.1
+likehood2.2 <- 1
+plot(pfit, rel.like, type = 'l', xlab = 'prob', ylab = 'relative likelihood function')
+abline(v = p.hat.1, col = 'red', lty = 2)
+abline(h = likehood2.2, col = 'red', lty = 2)
+points(p.hat.1, likehood2.2, col = 'red', pch = 20)
 
-binom.log.likelihood(x / N, x, N)
 
-binom.log.likelihood(x / N, x, N) - binom.log.likelihood(Task.3.Solver(x, N), x, N)
+llike <- binom.log.likelihood(pfit, x, N)
+llikehood <- binom.log.likelihood(p.hat.11, x, N)
+plot(pfit, llike, type = 'l', xlab = 'prob', ylab = 'log-likelihood function')
+abline(v = p.hat.11, col = 'red', lty = 2)
+abline(h = llikehood, col = 'red', lty = 2)
+points(p.hat.1, llikehood, col = 'red', pch = 20)
+
+
+rel.llike <- llike - llikehood
+llikehood2 <- 0
+plot(pfit, rel.llike, type = 'l', xlab = 'prob', ylab = 'relative log-likelihood function')
+abline(v = p.hat.11, col = 'red', lty = 2)
+abline(h = llikehood2, col = 'red', lty = 2)
+points(p.hat.1, llikehood2, col = 'red', pch = 20)
+
+
+ratio <- -2*logb(rel.like)
+plot(pfit, ratio, type = 'l', xlab = 'prob', ylab = 'likelihood ratio test statistic')
+abline(v = p.hat.1, col = 'red', lty = 2)
+abline(h = 0, col = 'red', lty = 2)
+points(p.hat.1, 0, col = 'red', pch = 20)
