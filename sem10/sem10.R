@@ -41,7 +41,7 @@ N <- 1000
 # sqrt(Uw) = (phat - p0)* sqrt((phat(1 - phat))/N) ~ N(0,1)
 # N = 1000, X = 534, so phat = 534/1000 - dosad do vzorcov
 # (0.534 - 0.5)*sqrt(1000/(0.534*(0.5))) = 2.1520 - value of test statistics
-# now criticla region and p-value
+# now critical region and p-value
 u_alpha <- qnorm(0.05/2, lower.tail = F) # quantiles for desirable ciritical region
 # if it is two-sided
 
@@ -62,14 +62,39 @@ p_value <- 2*(1 - pnorm(abs(my_z_score))) # this is form kross
 # on the left and right, u can see the borders of your confidece interval(the last line before Results)
 
 # likelihood ratio test
-binom.log.likelihood <- function(p, x, N) {
+### EXPERIMENTAL ###
+binom.log.likelihood.scalar <- function(p, x, N) {
   return (2*((x * log(x / (N * p))) + ((N - x) * log((N - x) / (N * (1 - p))))))
 }
-x <- rbinom(N, 1, 0.534)
-Ulr <- -2 * binom.log.likelihood(0.5, x, N)
-p_value <- pnorm(Ulr)
 
+binom.log.likelihood.vector <- function(p, x, N) {
+  res <- 0
+  for (i in seq(0, length(x))) {
+    res <- res + (2*((x[i] * log(x[i] / (N * p))) + ((N - x[i]) * log((N - x[i]) / (N * (1 - p))))))
+  }
+  return (res)
+}
+### EXPERIMENTAL ###
+
+N <- 1000
+p0 <- 0.5
+phat <- 0.534
+x <- rbinom(N, 1, 0.534)
+# yeah, this is wrong - need to remake it for vector
+Ulr <- 2 * (x * log(x / (N * p0)) + (N - x) * log((N - x) / (N * (1 - p0))))
+p_value <- 1 - pnorm(Ulr)
+alpha <- 0.05
+crit.value <-  qchisq(alpha, df=1, lower.tail=F)
+ci.function <- function(p0, x, N, alpha) {
+  Ulr <- 2 * (x * log(x / (N * p0)) + (N - x) * log((N - x) / (N * (1 - p0))))
+  crit.value <-  qchisq(alpha, df=1, lower.tail=F)
+  return (Ulr - crti.value)
+}
+ci.lower.bound <- uniroot(f = ci.function, interval = c(0, phat), p0 = p0, x = x, N = N, alpha = alpha)
+ci.upper.bound <- uniroot(f = ci.function, interval = c(phat, 1), p0 = p0, x = x, N = N, alpha = alpha)
 #######################
+
+
 #######################
 # Task 2
 N <- 350
